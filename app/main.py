@@ -30,6 +30,15 @@ def main():
                     exit(0)
         exit(1)
 
+    if pattern[0] == "[" and pattern[-1] == "]":
+        pattern = pattern[1:-1]
+
+        for letter in pattern:
+            if match_pattern(input_line, letter):
+                exit(0)
+        exit(1)
+
+
     if match_pattern(input_line, pattern):
         exit(0)
     else:
