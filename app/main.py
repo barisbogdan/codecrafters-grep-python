@@ -19,10 +19,13 @@ def main():
         print("Expected first argument to be '-E'")
         exit(1)
 
-    # You can use print statements as follows for debugging, they'll be visible when running tests.
-    print("Logs from your program will appear here!")
+    if pattern[0] == "\\":
+        if pattern == "\d":
+            for letter in input_line:
+                if letter.isdigit():
+                    exit(0)
+        exit(1)
 
-    # Uncomment this block to pass the first stage
     if match_pattern(input_line, pattern):
         exit(0)
     else:
