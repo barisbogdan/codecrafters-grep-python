@@ -24,6 +24,10 @@ def main():
             for letter in input_line:
                 if letter.isdigit():
                     exit(0)
+        if pattern == "\w":
+            for letter in input_line:
+                if letter.isalnum() or letter == "_":
+                    exit(0)
         exit(1)
 
     if match_pattern(input_line, pattern):
