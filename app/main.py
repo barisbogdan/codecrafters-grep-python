@@ -20,7 +20,7 @@ def match_negative_group(input_line, group):
     return not any(char in input_line for char in group)
 
 def match_pattern(input_line, pattern):
-    while input_line:
+    while pattern:
         if pattern[0] == "\\":
             if 1 < len(pattern):
                 if pattern[1] == "d":
@@ -45,16 +45,16 @@ def match_pattern(input_line, pattern):
                 if not match_positive_group(input_line, group):
                     return False
             pattern = pattern[end_idx + 2:]
-            input_line = input_line[end_idx + 2:]
+            input_line = input_line[1:]
         else:
             if not match_literal(input_line, pattern[0]):
                 return False
             input_line = input_line[1:]
             pattern = pattern[1:]
 
-    return True
+    return not input_line
 
-def calculate_lenght(pattern):
+def calculate_length(pattern):
     char = 0
     while pattern:
         if pattern[0] == "\\":
@@ -76,16 +76,24 @@ def calculate_lenght(pattern):
 def main():
     pattern = sys.argv[2]
     input_line = sys.stdin.read()
-    pattern_lenght = calculate_lenght(pattern)
+    pattern_to_calculate = pattern
+    if pattern_to_calculate.startswith("^"):
+        pattern_to_calculate = pattern_to_calculate[1:]
+    pattern_lenght = calculate_length(pattern_to_calculate)
+    del pattern_to_calculate
     iteration = 0
     if sys.argv[1] != "-E":
         print("Expected first argument to be '-E'")
         exit(1)
 
-    while iteration + pattern_lenght <= len(input_line):
-        if match_pattern(input_line[iteration:iteration + pattern_lenght], pattern):
+    if pattern.startswith("^"):
+        if match_pattern(input_line[0:pattern_lenght], pattern[1:]):
             exit(0)
-        iteration += 1
+    else:
+        while iteration + pattern_lenght <= len(input_line):
+            if match_pattern(input_line[iteration:iteration + pattern_lenght], pattern):
+                exit(0)
+            iteration += 1
     
     exit(1)
 
