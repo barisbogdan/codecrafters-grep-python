@@ -79,6 +79,8 @@ def main():
     pattern_to_calculate = pattern
     if pattern_to_calculate.startswith("^"):
         pattern_to_calculate = pattern_to_calculate[1:]
+    if pattern_to_calculate[::-1].startswith("$"):
+        pattern_to_calculate = pattern_to_calculate[:-1]
     pattern_lenght = calculate_length(pattern_to_calculate)
     del pattern_to_calculate
     iteration = 0
@@ -87,6 +89,11 @@ def main():
         exit(1)
 
     if pattern.startswith("^"):
+        if match_pattern(input_line[0:pattern_lenght], pattern[1:]):
+            exit(0)
+    elif pattern[::-1].startswith("$"):
+        pattern = pattern[::-1]
+        input_line = input_line[::-1]
         if match_pattern(input_line[0:pattern_lenght], pattern[1:]):
             exit(0)
     else:
