@@ -77,6 +77,9 @@ def match_pattern(pattern_stack):
                         code = False
                 pattern = pattern[end_idx + 2:]
                 input_line = input_line[1:]
+            elif pattern[0] == ".":
+                input_line = input_line[1:]
+                pattern = pattern[1:]
             else:
                 if not match_literal(input_line[0], pattern[0]):
                     code = False
