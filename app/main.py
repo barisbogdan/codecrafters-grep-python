@@ -48,6 +48,10 @@ def match_pattern(pattern_stack):
                     pattern_stack = stack + pattern_stack
                     del stack
                 code = False
+            elif len(pattern) > 1 and pattern[1] == "?":
+                if match_literal(input_line, pattern[0]):
+                    input_line = input_line[1:]
+                pattern = pattern[2:]
             elif pattern[0] == "\\":
                 if 1 < len(pattern):
                     if pattern[1] == "d":
@@ -111,6 +115,9 @@ def calculate_length(pattern, input_line):
     while pattern:
         if pattern[0] == "+":
             max_char = len(input_line)
+            pattern = pattern[1:]
+        elif pattern[0] == "?":
+            min_char -= 1
             pattern = pattern[1:]
         elif pattern[0] == "\\":
             if 1 < len(pattern):
